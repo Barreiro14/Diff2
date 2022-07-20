@@ -4,8 +4,6 @@ def main():
 	#Ep = [0.01]
 	for e in Ep:
 		NumSol(e, 5)
-	
-	print("hasta ahora todo jevi")
 
 	#main function
 

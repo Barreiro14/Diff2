@@ -16,8 +16,7 @@ def NumSol(E, T):
     t = np.linspace(0, T, Nt + 1)
     dt = t[1] - t[0]
     #F = dt/dx**2
-    F = 0.25
-    print(F)
+    F = 0.25 #TODO: find a way to fix f to 0.25 without manually doing it
     ψ = np.zeros(Nx + 1)
     ψ_n = np.zeros(Nx + 1)
 
@@ -31,13 +30,9 @@ def NumSol(E, T):
                     (ψ_n[i+1]**2) - (ψ_n[i]**2) - \
                         (ψ_n[i]*ψ_n[i+1]))))
 
-        #ψ[0] = 0; ψ[Nx] = 0
+        ψ[0] = 0; ψ[Nx] = 0
         ψ_n[:] = ψ
-        #sum = 0
-        #for element in ψ:
-        #    sum = sum + element**2
-        #ψ = (len(ψ)/(sum**(1/2)))*ψ
-        ψ = ψ/(2.19791091e-9)
+        ψ = ψ/(2.19791091e-9) #TODO: find a way to better normalize the function
         print("para t={}".format(dt*t), ψ)
         Graph(ψ, x, t*dt, E, 1)
     
