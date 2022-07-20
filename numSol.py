@@ -1,10 +1,12 @@
 import numpy as np
 from graph import Graph
-def ψ0(x):
-    #condiciones iniciales de la solucion numerica
-    return 1.08*(np.tanh(100*(x-0.25)) - np.tanh(100*(x-0.26)))
+
 
 def NumSol(E, T):
+    def ψ0(x):
+        #condiciones iniciales de la solucion numerica
+        return 1.08*(np.tanh(100*(x-0.25)) - np.tanh(100*(x-0.26)))
+
     L = 10
     Nx = 99
     Nt = 10
@@ -22,7 +24,8 @@ def NumSol(E, T):
     for T in range(1, Nt):
         for i in range(1, Nx):
             ψ[i] = ψ_n[i] + F*(ψ_n[i-1] - 2*ψ_n[i] + ψ_n[i+1]) + \
-                + 2*E*F*((ψ_n[i-1] - ψ_n[i])**2) + 2*E*ψ_n[i]*F*(ψ_n[i-1] - 2*ψ_n[i] + ψ_n[i+1])
+                2*E*F*((ψ_n[i-1] - ψ_n[i])**2) + \
+                2*E*ψ_n[i]*F*(ψ_n[i-1] - 2*ψ_n[i] + ψ_n[i+1])
 
         ψ[0] = 0; ψ[Nx] = 0
         ψ_n[:] = ψ
@@ -30,6 +33,3 @@ def NumSol(E, T):
         Graph(ψ, x, T, E)
     
     
-    #Graph(ψ, x, T, E)
-
-NumSol(0.1, 10)
