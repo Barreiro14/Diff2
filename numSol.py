@@ -5,7 +5,7 @@ from graph import Graph
 def NumSol(E, T):
     def ψ0(x):
         #condiciones iniciales de la solucion numerica
-        return 1.08*(np.tanh(100*(x-0.25)) - np.tanh(100*(x-0.26)))
+        return 1.08*(np.tanh(100*(x-0.25)) - np.tanh(100*(x-0.250001)))
 
     L = 10
     Nx = 99
@@ -21,15 +21,15 @@ def NumSol(E, T):
     for i in range(0, Nx + 1):
         ψ_n[i] = ψ0(x[i])
 
-    for T in range(1, Nt):
+    for t in range(1, Nt):
         for i in range(1, Nx):
-            ψ[i] = ψ_n[i] + F*(ψ_n[i-1] - 2*ψ_n[i] + ψ_n[i+1]) + \
-                2*E*F*((ψ_n[i-1] - ψ_n[i])**2) + \
-                2*E*ψ_n[i]*F*(ψ_n[i-1] - 2*ψ_n[i] + ψ_n[i+1])
+            ψ[i] = ψ_n[i] + F*((ψ_n[i+1] - 2*ψ_n[i] + ψ_n[i-1]) + \
+                2*E*(((ψ_n[i+1]-ψ_n[i])**2) + ψ_n[i]*(ψ_n[i+1] - \
+                2*ψ_n[i] + ψ_n[i-1])))
 
         ψ[0] = 0; ψ[Nx] = 0
         ψ_n[:] = ψ
         print("para t={}".format(T), ψ)
-        Graph(ψ, x, T, E)
+        Graph(ψ, x, T - t*dt, E)
     
     
