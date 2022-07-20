@@ -1,4 +1,5 @@
 import numpy as np
+from fractions import Fraction
 import matplotlib.pyplot as plt
 
 
@@ -13,7 +14,7 @@ def Graph(ψ, l, t, E, s):
     plt.title("Ɛ = {}".format(E), loc = 'left')
     plt.legend(["Analytical 2nd perturbation", "Numerical", "Analytical linear"])
     plt.xlabel("x")
-    plt.ylabel("ψ(x, {}t)".format(t))
+    plt.ylabel("ψ(x, {}t)".format(Fraction(t).limit_denominator()))
     plt.ylim([0, 0.8])
     plt.xlim([l[0], l[-1]])
     plt.grid()
