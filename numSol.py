@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from graph import Graph
 
@@ -5,16 +6,18 @@ from graph import Graph
 def NumSol(E, T):
     def ψ0(x):
         #condiciones iniciales de la solucion numerica
-        return 1.08*(np.tanh(100*(x-0.25)) - np.tanh(100*(x-0.250001)))
+        return 1.08*(np.tanh(100*(x+0.001)) - np.tanh(100*(x-0.001)))
 
     L = 10
     Nx = 99
-    Nt = 10
+    Nt = 15
     x = np.linspace(-L, L, Nx + 1)
-    dx = x[1] - x[0]
+    dx = x[1] + x[0]
     t = np.linspace(0, T, Nt + 1)
     dt = t[1] - t[0]
-    F = dt/dx**2
+    #F = dt/dx**2
+    F = 0.25
+    print(F)
     ψ = np.zeros(Nx + 1)
     ψ_n = np.zeros(Nx + 1)
 
@@ -23,13 +26,19 @@ def NumSol(E, T):
 
     for t in range(1, Nt):
         for i in range(1, Nx):
-            ψ[i] = ψ_n[i] + F*((ψ_n[i+1] - 2*ψ_n[i] + ψ_n[i-1]) + \
-                2*E*(((ψ_n[i+1]-ψ_n[i])**2) + ψ_n[i]*(ψ_n[i+1] - \
-                2*ψ_n[i] + ψ_n[i-1])))
+            ψ[i] = ψ_n[i] + F*(ψ_n[i+1] - 2*ψ_n[i] + \
+                ψ_n[i-1] + 2*E*((ψ_n[i]*ψ_n[i-1] + \
+                    (ψ_n[i+1]**2) - (ψ_n[i]**2) - \
+                        (ψ_n[i]*ψ_n[i+1]))))
 
-        ψ[0] = 0; ψ[Nx] = 0
+        #ψ[0] = 0; ψ[Nx] = 0
         ψ_n[:] = ψ
-        print("para t={}".format(T), ψ)
-        Graph(ψ, x, T - t*dt, E)
+        #sum = 0
+        #for element in ψ:
+        #    sum = sum + element**2
+        #ψ = (len(ψ)/(sum**(1/2)))*ψ
+        ψ = ψ/(2.19791091e-9)
+        print("para t={}".format(dt*t), ψ)
+        Graph(ψ, x, t*dt, E, 1)
     
     
